@@ -33,7 +33,7 @@ def calculateContentLength[F[_]: Applicative](implicit F: Ask[F, String]): F[Int
   F.ask.map(_.length)
   
 def calculateModifiedContentLength[F[_]: Applicative](implicit F: Local[F, String]): F[Int] =
-  F.local(calculateContentLength[F])("Prefix " + _)
+  F.local("Prefix " + _)(calculateContentLength[F])
 
 val result = calculateModifiedContentLength[Reader[String, ?]].run("Hello")
 
